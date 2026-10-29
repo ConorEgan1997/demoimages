@@ -181,20 +181,26 @@ def compact():
 # ---------------- HERO BANNER: Lantern walk ----------------
 def hero_banner():
     w, h = 1600, 600
+    # CHAMP renders this layout as a short full-width strip cropped around the vertical
+    # centre, so the procession lives in the middle band (y ~230-380).
     defs = f'''<linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{NAVY}"/>
-    <stop offset=".6" stop-color="#25507A"/><stop offset="1" stop-color="{TEAL}"/></linearGradient>'''
-    body = f'<rect width="{w}" height="{h}" fill="url(#sky2)"/>' + stars(w, h, 170, 11, 320)
-    body += f'<circle cx="300" cy="120" r="60" fill="{CREAM}" opacity=".95"/><circle cx="300" cy="120" r="120" fill="{CREAM}" opacity=".06"/>'
-    body += f'<path d="M0 380 Q300 300 620 350 T1200 320 T1600 340 V600 H0Z" fill="#1C3A57"/>'
-    body += f'<path d="M0 450 Q400 380 820 430 T1600 410 V600 H0Z" fill="#162C45"/>'
-    # winding path
-    body += f'<path d="M-20 600 C300 560 520 520 760 500 S1150 470 1400 440 S1600 425 1640 420" stroke="#2E4E6E" stroke-width="40" fill="none" stroke-linecap="round"/>'
-    pts = [(80, 585, 72), (190, 568, 52), (270, 556, 70), (390, 540, 66), (470, 532, 48), (560, 522, 68), (660, 512, 64),
-           (740, 504, 46), (830, 498, 62), (930, 490, 60), (1010, 484, 44), (1100, 476, 58), (1190, 466, 56), (1260, 458, 40),
-           (1340, 450, 52), (1420, 442, 50), (1500, 434, 46)]
-    for i, (x, y, hh) in enumerate(pts):
-        child = hh < 50
-        body += person(x, y, hh, "#0D1B2E", child=child, lantern=(i % 3 != 2) or child)
+    <stop offset=".35" stop-color="#1E3F66"/><stop offset=".5" stop-color="#2D6273"/><stop offset=".62" stop-color="#1C3A57"/></linearGradient>'''
+    body = f'<rect width="{w}" height="{h}" fill="url(#sky2)"/>' + stars(w, h, 170, 11, 260)
+    body += f'<circle cx="1330" cy="215" r="40" fill="{CREAM}" opacity=".95"/><circle cx="1330" cy="215" r="90" fill="{CREAM}" opacity=".07"/>'
+    body += f'<path d="M0 285 Q300 230 620 268 T1200 250 T1600 262 V600 H0Z" fill="#1C3A57"/>'
+    body += f'<path d="M0 330 Q400 280 820 318 T1600 300 V600 H0Z" fill="#162C45"/>'
+    body += f'<rect y="420" width="{w}" height="180" fill="#11233A"/>'
+    # path
+    body += f'<path d="M-20 405 C300 385 600 365 900 345 S1400 310 1640 295" stroke="#2E4E6E" stroke-width="30" fill="none" stroke-linecap="round"/>'
+    xs = [70, 165, 235, 330, 400, 480, 570, 640, 720, 810, 880, 960, 1050, 1120, 1200, 1280, 1350, 1430, 1510]
+    hs = [62, 46, 60, 58, 44, 60, 56, 42, 58, 56, 42, 54, 54, 40, 52, 50, 40, 48, 46]
+    for i, (x, hh) in enumerate(zip(xs, hs)):
+        y = 402 - (x / 1600) * 105
+        child = hh < 47
+        body += person(x, y, hh, "#0B1828", child=child, lantern=(i % 3 != 2) or child)
+    # trees on the ridge for depth
+    for tx, ts in [(40, .55), (1570, .6), (1490, .45)]:
+        body += f'<g transform="translate({tx},300) scale({ts})"><path d="M0 -160 L45 -60 L25 -60 L60 0 L-60 0 L-25 -60 L-45 -60Z" fill="#0F2236"/></g>'
     return svg(w, h, defs, body)
 
 # ---------------- IMAGE LEFT: Home for a family ----------------

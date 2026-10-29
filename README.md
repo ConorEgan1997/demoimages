@@ -22,3 +22,6 @@ Regenerate with `python3 demo-campaign-images/generate.py` (needs Playwright + I
 
 ## Second example set
 `hospice-flowers/`: Willowmere Hospice, a flower-themed set at the same CHAMP sizes (see its README).
+
+## Knowledge base page (WordPress)
+`asset-pack/web/donation-page-image-guide-wordpress.html`: charity-facing guide as one HTML snippet. Paste it into a WordPress **Custom HTML** block. It has no JavaScript, and its CSS is scoped under `.cdg`. Images load from jsDelivr, pinned to commit `0b88131`, so later changes to this repo won't alter the live page. Rebuild with `python3 asset-pack/web/build_web.py <commit-sha>`.

@@ -64,6 +64,18 @@ def person(x, y, h, color, child=False, lantern=False, facing=1):
 def svg(w, h, defs, body):
     return f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}"><defs>{GLOW_DEFS}{defs}</defs>{body}</svg>'
 
+MOON_DEFS = f'''<radialGradient id="moonhalo"><stop offset="0" stop-color="#FFF4D6" stop-opacity=".55"/>
+<stop offset=".35" stop-color="{GOLD}" stop-opacity=".22"/><stop offset="1" stop-color="{GOLD}" stop-opacity="0"/></radialGradient>
+<radialGradient id="moonface" cx=".4" cy=".38"><stop offset="0" stop-color="#FFFBEF"/><stop offset=".7" stop-color="#FFE9B8"/><stop offset="1" stop-color="#F6CF7E"/></radialGradient>'''
+
+def moon(cx, cy, r):
+    """Warm, glowing moon: reads as a light source even under CHAMP's dark image scrim."""
+    return (f'<circle cx="{cx}" cy="{cy}" r="{r*3.2}" fill="url(#moonhalo)"/>'
+            f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="url(#moonface)"/>'
+            f'<circle cx="{cx-r*.3}" cy="{cy+r*.15}" r="{r*.18}" fill="#F2D49A" opacity=".55"/>'
+            f'<circle cx="{cx+r*.28}" cy="{cy-r*.25}" r="{r*.12}" fill="#F2D49A" opacity=".5"/>'
+            f'<circle cx="{cx+r*.15}" cy="{cy+r*.4}" r="{r*.09}" fill="#F2D49A" opacity=".45"/>')
+
 # ---------------- LOGOS ----------------
 def logo_square():
     w = h = 512
@@ -115,9 +127,9 @@ def classic():
     w, h = 1600, 600
     defs = f'''<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="{NAVY}"/><stop offset=".55" stop-color="{INDIGO}"/>
-      <stop offset=".85" stop-color="#7A5A7E"/><stop offset="1" stop-color="{CORAL}"/></linearGradient>'''
+      <stop offset=".85" stop-color="#7A5A7E"/><stop offset="1" stop-color="{CORAL}"/></linearGradient>''' + MOON_DEFS
     body = f'<rect width="{w}" height="{h}" fill="url(#sky)"/>' + stars(w, h, 140, 1, 300)
-    body += f'<circle cx="1290" cy="120" r="46" fill="{CREAM}"/><circle cx="1308" cy="108" r="44" fill="{INDIGO}" opacity=".0"/>'
+    body += moon(1290, 150, 42)
     body += f'<path d="M0 470 Q400 400 800 450 T1600 430 V600 H0Z" fill="#2E4470"/>'
     base = 520
     cols = [("#C9D3E3", "#2C3E63"), ("#E9C9A8", NAVY2), ("#F3E3CC", "#3A2E4F"), ("#BFD8D3", NAVY2), ("#EED6C4", "#2C3E63")]
@@ -139,71 +151,70 @@ def classic():
     body += snow(w, h, 220, 7)
     return svg(w, h, defs, body)
 
-# ---------------- COMPACT: Warm meal ----------------
+# ---------------- COMPACT: Warm meal (CHAMP spec 1200x480, lower-left kept clear) ----------------
 def compact():
-    w, h = 1600, 600
+    w, h = 1200, 480
     defs = f'''<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E6CF"/><stop offset="1" stop-color="{CREAM}"/></linearGradient>
     <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{TEAL}"/><stop offset="1" stop-color="#1F5A55"/></linearGradient>
     <radialGradient id="soup" cx=".5" cy=".4"><stop offset="0" stop-color="#F6B85A"/><stop offset="1" stop-color="#D9822B"/></radialGradient>'''
     body = f'<rect width="{w}" height="{h}" fill="url(#wall)"/>'
     r = random.Random(4)
-    for _ in range(60):
-        body += f'<circle cx="{r.uniform(0,w):.0f}" cy="{r.uniform(0,380):.0f}" r="{r.uniform(3,7):.1f}" fill="{AMBER}" opacity=".18"/>'
-    body += f'<rect y="400" width="{w}" height="200" fill="#C98B5A"/><rect y="400" width="{w}" height="14" fill="#B5764A"/>'
-    for i in range(0, w, 160):
-        body += f'<line x1="{i}" y1="414" x2="{i+40}" y2="600" stroke="#B5764A" stroke-width="3" opacity=".5"/>'
-    # cloth
-    body += f'<path d="M520 470 L1080 470 L1140 600 L460 600Z" fill="{CREAM}"/>'
-    for i in range(8):
-        body += f'<line x1="{540+i*70}" y1="470" x2="{500+i*82}" y2="600" stroke="{CORAL}" stroke-width="6" opacity=".55"/>'
-    body += f'<line x1="500" y1="510" x2="1100" y2="510" stroke="{CORAL}" stroke-width="6" opacity=".55"/><line x1="480" y1="560" x2="1120" y2="560" stroke="{CORAL}" stroke-width="6" opacity=".55"/>'
-    # bowl
-    body += f'<ellipse cx="800" cy="500" rx="210" ry="26" fill="#000" opacity=".12"/>'
-    body += f'<path d="M590 380 Q600 500 800 505 Q1000 500 1010 380 Z" fill="url(#bowl)"/>'
-    body += f'<ellipse cx="800" cy="380" rx="210" ry="40" fill="#1F5A55"/><ellipse cx="800" cy="384" rx="190" ry="30" fill="url(#soup)"/>'
-    body += f'<path d="M640 420 Q800 440 960 420" stroke="{CREAM}" stroke-width="6" fill="none" opacity=".6"/>'
-    for cx, cy in [(740, 380), (820, 372), (860, 392), (770, 396)]:
-        body += f'<circle cx="{cx}" cy="{cy}" r="9" fill="#7FB069"/>'
-    body += f'<circle cx="800" cy="385" r="7" fill="{CREAM}"/><circle cx="700" cy="388" r="6" fill="{CREAM}"/>'
-    # spoon
-    body += f'<path d="M930 370 L1080 250" stroke="#C9CED6" stroke-width="12" stroke-linecap="round"/><ellipse cx="915" cy="380" rx="24" ry="14" fill="#C9CED6" transform="rotate(-38 915 380)"/>'
-    # bread
-    body += f'<path d="M1110 470 Q1120 410 1200 410 Q1280 410 1290 470 Z" fill="#D9963F"/><path d="M1150 430 l20 -10 M1190 425 l20 -10 M1230 430 l20 -10" stroke="#F3C987" stroke-width="6" stroke-linecap="round"/>'
-    # steam
-    for sx in [730, 800, 870]:
-        body += f'<path d="M{sx} 330 C{sx-30} 290 {sx+30} 260 {sx} 220 C{sx-30} 180 {sx+25} 150 {sx} 120" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" opacity=".85"/>'
-    # mug left
-    body += f'<rect x="330" y="380" width="110" height="100" rx="14" fill="{CORAL}"/><path d="M440 400 a26 26 0 0 1 0 60" stroke="{CORAL}" stroke-width="14" fill="none"/>'
-    body += f'<ellipse cx="385" cy="382" rx="55" ry="10" fill="#6B3A2A"/>'
-    body += lantern_glyph(385, 435, 52, body=CREAM, frame=NAVY, flame=AMBER, glow=False)
+    for _ in range(45):
+        body += f'<circle cx="{r.uniform(0,w):.0f}" cy="{r.uniform(0,250):.0f}" r="{r.uniform(3,6):.1f}" fill="{AMBER}" opacity=".18"/>'
+    # table: surface starts high so the bowl sits in the upper-middle band
+    T = 275
+    body += f'<rect y="{T}" width="{w}" height="{h-T}" fill="#C98B5A"/><rect y="{T}" width="{w}" height="12" fill="#B5764A"/>'
+    for i in range(0, w, 150):
+        body += f'<line x1="{i}" y1="{T+12}" x2="{i+30}" y2="{h}" stroke="#B5764A" stroke-width="3" opacity=".45"/>'
+    # plain gingham cloth under the bowl (quiet texture where CHAMP's headline sits)
+    body += f'<path d="M380 {T+40} L820 {T+40} L880 {h} L320 {h}Z" fill="{CREAM}"/>'
+    for i in range(7):
+        body += f'<line x1="{400+i*68}" y1="{T+40}" x2="{350+i*85}" y2="{h}" stroke="{CORAL}" stroke-width="5" opacity=".4"/>'
+    body += f'<line x1="360" y1="{T+90}" x2="840" y2="{T+90}" stroke="{CORAL}" stroke-width="5" opacity=".4"/><line x1="340" y1="{T+145}" x2="860" y2="{T+145}" stroke="{CORAL}" stroke-width="5" opacity=".4"/>'
+    # bowl, centred horizontally, upper-middle
+    bx, by = 600, 205
+    body += f'<ellipse cx="{bx}" cy="{by+118}" rx="175" ry="22" fill="#000" opacity=".13"/>'
+    body += f'<path d="M{bx-175} {by} Q{bx-165} {by+118} {bx} {by+122} Q{bx+165} {by+118} {bx+175} {by} Z" fill="url(#bowl)"/>'
+    body += f'<ellipse cx="{bx}" cy="{by}" rx="175" ry="34" fill="#1F5A55"/><ellipse cx="{bx}" cy="{by+3}" rx="158" ry="25" fill="url(#soup)"/>'
+    body += f'<path d="M{bx-135} {by+36} Q{bx} {by+54} {bx+135} {by+36}" stroke="{CREAM}" stroke-width="5" fill="none" opacity=".6"/>'
+    for dx, dy in [(-50, 0), (18, -7), (52, 9), (-25, 12)]:
+        body += f'<circle cx="{bx+dx}" cy="{by+dy}" r="8" fill="#7FB069"/>'
+    body += f'<circle cx="{bx}" cy="{by+4}" r="6" fill="{CREAM}"/><circle cx="{bx-85}" cy="{by+6}" r="5" fill="{CREAM}"/>'
+    body += f'<path d="M{bx+108} {by-8} L{bx+230} {by-105}" stroke="#C9CED6" stroke-width="11" stroke-linecap="round"/><ellipse cx="{bx+96}" cy="{by}" rx="20" ry="12" fill="#C9CED6" transform="rotate(-38 {bx+96} {by})"/>'
+    for sx in [bx-60, bx, bx+60]:
+        body += f'<path d="M{sx} {by-42} C{sx-26} {by-72} {sx+26} {by-98} {sx} {by-128} C{sx-26} {by-156} {sx+22} {by-176} {sx} {by-196}" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" opacity=".9"/>'
+    # mug + bread on the RIGHT, so the lower-left corner stays clear for logo/headline
+    body += f'<path d="M870 {T+18} Q878 {T-40} 950 {T-40} Q1022 {T-40} 1030 {T+18} Z" fill="#D9963F"/><path d="M905 {T-14} l18 -9 M942 {T-19} l18 -9 M980 {T-14} l18 -9" stroke="#F3C987" stroke-width="5" stroke-linecap="round"/>'
+    body += f'<rect x="1070" y="{T-70}" width="92" height="86" rx="12" fill="{CORAL}"/><path d="M1162 {T-52} a22 22 0 0 1 0 50" stroke="{CORAL}" stroke-width="12" fill="none"/>'
+    body += f'<ellipse cx="1116" cy="{T-68}" rx="46" ry="8" fill="#6B3A2A"/>'
+    body += lantern_glyph(1116, T-24, 44, body=CREAM, frame=NAVY, flame=AMBER, glow=False)
     return svg(w, h, defs, body)
 
 # ---------------- HERO BANNER: Lantern walk ----------------
 def hero_banner():
-    w, h = 1600, 600
-    # CHAMP renders this layout as a short full-width strip: background-size cover,
-    # position 50% 40%. On a wide desktop only rows ~200-305 of this 600px image show,
-    # so the whole procession (heads to feet) lives in that band.
+    # CHAMP spec: 1920x600, "subject across the horizontal middle". CHAMP renders a thin
+    # strip with background-size cover at 50% 40%, which shows roughly rows 190-320 on a
+    # wide desktop and 165-350 on a laptop, so the procession sits in rows ~205-315.
+    w, h = 1920, 600
     defs = f'''<linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{NAVY}"/>
-    <stop offset=".28" stop-color="#1E3F66"/><stop offset=".4" stop-color="#2D6273"/><stop offset=".5" stop-color="#1C3A57"/></linearGradient>'''
-    body = f'<rect width="{w}" height="{h}" fill="url(#sky2)"/>' + stars(w, h, 200, 11, 230)
-    body += f'<circle cx="1330" cy="160" r="38" fill="{CREAM}" opacity=".95"/><circle cx="1330" cy="160" r="85" fill="{CREAM}" opacity=".07"/>'
-    body += f'<path d="M0 222 Q300 182 620 210 T1200 196 T1600 205 V600 H0Z" fill="#1C3A57"/>'
-    body += f'<path d="M0 262 Q400 228 820 252 T1600 240 V600 H0Z" fill="#162C45"/>'
-    body += f'<rect y="330" width="{w}" height="270" fill="#11233A"/>'
-    body += f'<path d="M-20 300 C300 290 600 280 900 270 S1400 255 1640 248" stroke="#2E4E6E" stroke-width="22" fill="none" stroke-linecap="round"/>'
-    xs = [60, 140, 200, 280, 340, 410, 490, 550, 620, 700, 760, 830, 910, 970, 1040, 1110, 1170, 1240, 1310, 1380, 1450, 1520]
-    hs = [50, 38, 48, 46, 36, 48, 45, 34, 46, 45, 34, 44, 44, 33, 42, 42, 33, 40, 40, 32, 38, 36]
-    for i, (x, hh) in enumerate(zip(xs, hs)):
-        y = 298 - (x / 1600) * 50
-        child = hh < 37
+    <stop offset=".3" stop-color="#1E3F66"/><stop offset=".42" stop-color="#2D6273"/><stop offset=".55" stop-color="#1C3A57"/></linearGradient>''' + MOON_DEFS
+    body = f'<rect width="{w}" height="{h}" fill="url(#sky2)"/>' + stars(w, h, 240, 11, 250)
+    body += moon(1600, 170, 34)
+    body += f'<path d="M0 240 Q360 198 740 226 T1440 212 T1920 222 V600 H0Z" fill="#1C3A57"/>'
+    body += f'<path d="M0 282 Q480 246 980 270 T1920 258 V600 H0Z" fill="#162C45"/>'
+    body += f'<rect y="345" width="{w}" height="255" fill="#11233A"/>'
+    body += f'<path d="M-20 318 C360 308 720 298 1080 288 S1680 272 1960 266" stroke="#2E4E6E" stroke-width="24" fill="none" stroke-linecap="round"/>'
+    xs = list(range(60, 1880, 70))
+    r = random.Random(9)
+    for i, x in enumerate(xs):
+        child = i % 3 == 1
+        hh = r.uniform(34, 38) if child else r.uniform(44, 52)
+        y = 316 - (x / 1920) * 50
         body += person(x, y, hh, "#0B1828", child=child, lantern=(i % 3 != 2) or child)
-    for tx, ts in [(30, .45), (1575, .5), (1500, .38)]:
-        body += f'<g transform="translate({tx},240) scale({ts})"><path d="M0 -160 L45 -60 L25 -60 L60 0 L-60 0 L-25 -60 L-45 -60Z" fill="#0F2236"/></g>'
-    # lantern reflections on a still lake below the walk (visible on taller crops)
-    r = random.Random(12)
+    for tx, ts in [(25, .5), (1890, .55), (1800, .42)]:
+        body += f'<g transform="translate({tx},262) scale({ts})"><path d="M0 -160 L45 -60 L25 -60 L60 0 L-60 0 L-25 -60 L-45 -60Z" fill="#0F2236"/></g>'
     for x in xs:
-        body += f'<ellipse cx="{x+8}" cy="{360 + r.uniform(0, 40):.0f}" rx="9" ry="2.5" fill="{GOLD}" opacity=".25"/>'
+        body += f'<ellipse cx="{x+8}" cy="{378 + r.uniform(0, 40):.0f}" rx="9" ry="2.5" fill="{GOLD}" opacity=".25"/>'
     return svg(w, h, defs, body)
 
 # ---------------- IMAGE LEFT: Home for a family ----------------
@@ -312,9 +323,10 @@ def immersive():
     w, h = 1920, 1080
     defs = f'''<linearGradient id="sky5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0A1426"/>
     <stop offset=".5" stop-color="{NAVY2}"/><stop offset=".72" stop-color="#3E3F6E"/><stop offset=".78" stop-color="#7D5C78"/></linearGradient>
-    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2D3459"/><stop offset="1" stop-color="#0A1426"/></linearGradient>'''
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2D3459"/><stop offset="1" stop-color="#0A1426"/></linearGradient>''' + MOON_DEFS
     body = f'<rect width="{w}" height="{h}" fill="url(#sky5)"/>' + stars(w, h, 380, 41, 760)
-    body += f'<circle cx="1560" cy="190" r="70" fill="{CREAM}"/><circle cx="1560" cy="190" r="160" fill="{CREAM}" opacity=".05"/>'
+    MX, MY, MR = 1600, 200, 62
+    body += moon(MX, MY, MR)
     horizon = 820
     body += f'<path d="M0 {horizon} L0 760 Q160 700 320 740 Q520 660 760 735 Q980 690 1180 745 Q1420 680 1640 735 Q1800 710 1920 750 L1920 {horizon} Z" fill="#141E36"/>'
     body += f'<rect y="{horizon}" width="{w}" height="{h-horizon}" fill="url(#lake)"/>'
@@ -325,6 +337,8 @@ def immersive():
         y = r.uniform(80, horizon-40)
         depth = (y / horizon)
         s = 0.35 + depth * 0.95 * r.uniform(.7, 1.1)
+        if math.hypot(x - MX, y - MY) < MR * 2.4:
+            continue  # keep the moon clear of lanterns
         lanterns.append((y, x, s))
     for y, x, s in sorted(lanterns):
         body += sky_lantern(x, y, s, 0.55 + 0.45*(y/horizon))
@@ -343,7 +357,9 @@ def immersive():
     body += person(180, 962, 150, "#070D1A")
     body += person(260, 962, 100, "#070D1A", child=True, facing=-1)
     body += sky_lantern(232, 760, 1.6)
-    body += f'<path d="M205 840 L225 800 M282 875 L240 800" stroke="#070D1A" stroke-width="10" stroke-linecap="round"/>'
+    # adult and child each raise one arm from the shoulder to the lantern's base
+    body += f'<path d="M198 852 Q206 826 220 802" stroke="#070D1A" stroke-width="9" fill="none" stroke-linecap="round"/>'
+    body += f'<path d="M248 890 Q244 846 242 804" stroke="#070D1A" stroke-width="7" fill="none" stroke-linecap="round"/>'
     body += person(420, 962, 140, "#070D1A", facing=-1)
     body += sky_lantern(380, 700, 1.3)
     return svg(w, h, defs, body)
@@ -356,15 +372,17 @@ def logo_3x1(text_col, tag_col, tile, glyph_body):
     <text x="258" y="196" font-family="Inter" font-weight="600" font-size="52" fill="{tag_col}" letter-spacing="6">TRUST</text>'''
     return svg(w, h, "", body)
 
+# (filename, scene, output width, output height, format). Sizes follow CHAMP's
+# per-layout "How your image sits in this layout" recommendations exactly.
 JOBS = [
-    ("lantern-trust-logo-240x80-light.png", lambda: logo_3x1(CREAM, AMBER, AMBER, NAVY), 720, 240, "png"),
-    ("lantern-trust-logo-240x80-dark.png", lambda: logo_3x1(NAVY, CORAL, NAVY, AMBER), 720, 240, "png"),
+    ("lantern-trust-logo-240x80-light.png", lambda: logo_3x1(CREAM, AMBER, AMBER, NAVY), 240, 80, "png"),
+    ("lantern-trust-logo-240x80-dark.png", lambda: logo_3x1(NAVY, CORAL, NAVY, AMBER), 240, 80, "png"),
     ("lantern-trust-logo-square.png", logo_square, 512, 512, "png"),
     ("lantern-trust-logo-wide.png", logo_wide, 1200, 320, "png"),
     ("lantern-trust-logo-wide-light.png", logo_wide_light, 1200, 320, "png"),
     ("classic-christmas-appeal-1600x600.jpg", classic, 1600, 600, "jpeg"),
-    ("compact-warm-meal-1600x600.jpg", compact, 1600, 600, "jpeg"),
-    ("hero-banner-lantern-walk-1600x600.jpg", hero_banner, 1600, 600, "jpeg"),
+    ("compact-warm-meal-1200x480.jpg", compact, 1200, 480, "jpeg"),
+    ("hero-banner-lantern-walk-1920x600.jpg", hero_banner, 1920, 600, "jpeg"),
     ("image-left-a-home-1120x1280.jpg", image_left, 1120, 1280, "jpeg"),
     ("image-right-winter-coats-1120x1280.jpg", image_right, 1120, 1280, "jpeg"),
     ("immersive-light-a-lantern-1920x1080.jpg", immersive, 1920, 1080, "jpeg"),
@@ -376,7 +394,9 @@ if __name__ == "__main__":
         for name, fn, w, h, fmt in JOBS:
             pg = b.new_page(viewport={"width": w, "height": h})
             bg = "transparent" if fmt == "png" else "#000"
-            pg.set_content(f'<html><body style="margin:0;background:{bg}">{fn()}</body></html>')
+            # the svg is scaled to the output size (logos are drawn at 3x and rendered at 240x80)
+            pg.set_content(f'<html><head><style>svg{{display:block;width:{w}px;height:{h}px}}</style></head>'
+                           f'<body style="margin:0;background:{bg}">{fn()}</body></html>')
             kw = {"type": fmt, "full_page": False, "omit_background": fmt == "png"}
             if fmt == "jpeg": kw["quality"] = 88
             pg.screenshot(path=str(OUT / name), **kw)

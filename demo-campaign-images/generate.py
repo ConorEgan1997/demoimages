@@ -181,26 +181,29 @@ def compact():
 # ---------------- HERO BANNER: Lantern walk ----------------
 def hero_banner():
     w, h = 1600, 600
-    # CHAMP renders this layout as a short full-width strip cropped around the vertical
-    # centre, so the procession lives in the middle band (y ~230-380).
+    # CHAMP renders this layout as a short full-width strip: background-size cover,
+    # position 50% 40%. On a wide desktop only rows ~200-305 of this 600px image show,
+    # so the whole procession (heads to feet) lives in that band.
     defs = f'''<linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{NAVY}"/>
-    <stop offset=".35" stop-color="#1E3F66"/><stop offset=".5" stop-color="#2D6273"/><stop offset=".62" stop-color="#1C3A57"/></linearGradient>'''
-    body = f'<rect width="{w}" height="{h}" fill="url(#sky2)"/>' + stars(w, h, 170, 11, 260)
-    body += f'<circle cx="1330" cy="215" r="40" fill="{CREAM}" opacity=".95"/><circle cx="1330" cy="215" r="90" fill="{CREAM}" opacity=".07"/>'
-    body += f'<path d="M0 285 Q300 230 620 268 T1200 250 T1600 262 V600 H0Z" fill="#1C3A57"/>'
-    body += f'<path d="M0 330 Q400 280 820 318 T1600 300 V600 H0Z" fill="#162C45"/>'
-    body += f'<rect y="420" width="{w}" height="180" fill="#11233A"/>'
-    # path
-    body += f'<path d="M-20 405 C300 385 600 365 900 345 S1400 310 1640 295" stroke="#2E4E6E" stroke-width="30" fill="none" stroke-linecap="round"/>'
-    xs = [70, 165, 235, 330, 400, 480, 570, 640, 720, 810, 880, 960, 1050, 1120, 1200, 1280, 1350, 1430, 1510]
-    hs = [62, 46, 60, 58, 44, 60, 56, 42, 58, 56, 42, 54, 54, 40, 52, 50, 40, 48, 46]
+    <stop offset=".28" stop-color="#1E3F66"/><stop offset=".4" stop-color="#2D6273"/><stop offset=".5" stop-color="#1C3A57"/></linearGradient>'''
+    body = f'<rect width="{w}" height="{h}" fill="url(#sky2)"/>' + stars(w, h, 200, 11, 230)
+    body += f'<circle cx="1330" cy="160" r="38" fill="{CREAM}" opacity=".95"/><circle cx="1330" cy="160" r="85" fill="{CREAM}" opacity=".07"/>'
+    body += f'<path d="M0 222 Q300 182 620 210 T1200 196 T1600 205 V600 H0Z" fill="#1C3A57"/>'
+    body += f'<path d="M0 262 Q400 228 820 252 T1600 240 V600 H0Z" fill="#162C45"/>'
+    body += f'<rect y="330" width="{w}" height="270" fill="#11233A"/>'
+    body += f'<path d="M-20 300 C300 290 600 280 900 270 S1400 255 1640 248" stroke="#2E4E6E" stroke-width="22" fill="none" stroke-linecap="round"/>'
+    xs = [60, 140, 200, 280, 340, 410, 490, 550, 620, 700, 760, 830, 910, 970, 1040, 1110, 1170, 1240, 1310, 1380, 1450, 1520]
+    hs = [50, 38, 48, 46, 36, 48, 45, 34, 46, 45, 34, 44, 44, 33, 42, 42, 33, 40, 40, 32, 38, 36]
     for i, (x, hh) in enumerate(zip(xs, hs)):
-        y = 402 - (x / 1600) * 105
-        child = hh < 47
+        y = 298 - (x / 1600) * 50
+        child = hh < 37
         body += person(x, y, hh, "#0B1828", child=child, lantern=(i % 3 != 2) or child)
-    # trees on the ridge for depth
-    for tx, ts in [(40, .55), (1570, .6), (1490, .45)]:
-        body += f'<g transform="translate({tx},300) scale({ts})"><path d="M0 -160 L45 -60 L25 -60 L60 0 L-60 0 L-25 -60 L-45 -60Z" fill="#0F2236"/></g>'
+    for tx, ts in [(30, .45), (1575, .5), (1500, .38)]:
+        body += f'<g transform="translate({tx},240) scale({ts})"><path d="M0 -160 L45 -60 L25 -60 L60 0 L-60 0 L-25 -60 L-45 -60Z" fill="#0F2236"/></g>'
+    # lantern reflections on a still lake below the walk (visible on taller crops)
+    r = random.Random(12)
+    for x in xs:
+        body += f'<ellipse cx="{x+8}" cy="{360 + r.uniform(0, 40):.0f}" rx="9" ry="2.5" fill="{GOLD}" opacity=".25"/>'
     return svg(w, h, defs, body)
 
 # ---------------- IMAGE LEFT: Home for a family ----------------

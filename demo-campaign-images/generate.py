@@ -3,7 +3,7 @@ Renders SVG scenes to JPG/PNG with Playwright Chromium."""
 import random, math, pathlib
 from playwright.sync_api import sync_playwright
 
-OUT = pathlib.Path(__file__).parent / "demo-campaign-images"
+OUT = pathlib.Path(__file__).parent
 OUT.mkdir(exist_ok=True)
 
 NAVY = "#14233C"; NAVY2 = "#1E3456"; INDIGO = "#2B3F6B"
@@ -336,7 +336,17 @@ def immersive():
     body += sky_lantern(380, 700, 1.3)
     return svg(w, h, defs, body)
 
+def logo_3x1(text_col, tag_col, tile, glyph_body):
+    w, h = 720, 240
+    body = f'''<rect x="12" y="12" width="216" height="216" rx="52" fill="{tile}"/>
+    {lantern_glyph(120, 120, 140, body=glyph_body, frame=CREAM, flame=GOLD, glow=False)}
+    <text x="256" y="128" font-family="Inter" font-weight="800" font-size="78" fill="{text_col}" letter-spacing="-2">Lantern</text>
+    <text x="258" y="196" font-family="Inter" font-weight="600" font-size="52" fill="{tag_col}" letter-spacing="6">TRUST</text>'''
+    return svg(w, h, "", body)
+
 JOBS = [
+    ("lantern-trust-logo-240x80-light.png", lambda: logo_3x1(CREAM, AMBER, AMBER, NAVY), 720, 240, "png"),
+    ("lantern-trust-logo-240x80-dark.png", lambda: logo_3x1(NAVY, CORAL, NAVY, AMBER), 720, 240, "png"),
     ("lantern-trust-logo-square.png", logo_square, 512, 512, "png"),
     ("lantern-trust-logo-wide.png", logo_wide, 1200, 320, "png"),
     ("lantern-trust-logo-wide-light.png", logo_wide_light, 1200, 320, "png"),

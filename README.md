@@ -16,7 +16,9 @@ Logos: lantern-trust-logo-240x80-light.png (for the campaign Logo URL — light 
 Regenerate with `python3 demo-campaign-images/generate.py` (needs Playwright + Inter font).
 
 ## Asset pack
-`asset-pack/CHAMP-Campaign-Image-Asset-Pack.pdf`: which image each CHAMP layout needs, crop diagrams for desktop and phone, on-page screenshots of both example charities, copy guidance, design tips and a charity intake checklist.
+`asset-pack/CHAMP-Campaign-Image-Asset-Pack.pdf`: which image each CHAMP layout needs, crop diagrams for desktop and phone, on-page screenshots of both example charities, copy guidance, design tips and a charity intake checklist (internal edition).
+
+`asset-pack/Donation-Page-Image-Guide.pdf`: charity-facing edition to send to clients. It has no admin notes or internal links, and adds a layout chooser and a "what to send us" checklist.
 
 ## Second example set
 `hospice-flowers/`: Willowmere Hospice, a flower-themed set at the same CHAMP sizes (see its README).

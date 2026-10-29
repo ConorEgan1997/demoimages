@@ -253,6 +253,8 @@ def image_right():
     for tx, ts in [(120, 1.3), (230, 1.0), (930, 1.2), (1030, 1.5)]:
         body += f'<g transform="translate({tx},900) scale({ts})"><path d="M0 -220 L60 -90 L32 -90 L80 0 L-80 0 L-32 -90 L-60 -90Z" fill="#1F4A5A"/><path d="M0 -220 L26 -160 L-26 -160Z M-32 -90 L32 -90 L44 -66 L-44 -66Z" fill="{SNOW}" opacity=".9"/></g>'
     cx, fy = 560, 1080
+    # figure sits low and slightly smaller so CHAMP's text overlay (top-left) clears the face
+    body += f'<g transform="translate({cx},{fy+120}) scale(.8) translate({-cx},{-fy})">'
     body += f'<ellipse cx="{cx}" cy="{fy+8}" rx="150" ry="20" fill="#9FB0C8" opacity=".5"/>'
     body += f'<circle cx="{cx+195}" cy="{fy-180}" r="260" fill="url(#bigglow)"/>'
     # boots
@@ -285,6 +287,7 @@ def image_right():
     body += f'<path d="M{cx-30} {fy-495} q8 -8 16 0 M{cx+14} {fy-495} q8 -8 16 0" stroke="{NAVY}" stroke-width="5" fill="none" stroke-linecap="round"/>'
     body += f'<path d="M{cx-14} {fy-465} q14 12 28 0" stroke="{NAVY}" stroke-width="5" fill="none" stroke-linecap="round"/>'
     body += f'<circle cx="{cx-40}" cy="{fy-475}" r="10" fill="{CORAL}" opacity=".5"/><circle cx="{cx+40}" cy="{fy-475}" r="10" fill="{CORAL}" opacity=".5"/>'
+    body += '</g>'
     body += snow(w, h, 160, 33)
     return svg(w, h, defs, body)
 

@@ -169,3 +169,56 @@ json.dump({'hub': {'title': 'CHAMP Donate Integrations', 'slug': HUB, 'html': hu
 for s, v in pages.items(): (OUT / f'{s}.html').write_text(v['html'])
 (OUT / 'hub.html').write_text(hub)
 print(len(pages), 'pages; hub', len(hub), 'chars; largest', max(len(v['html']) for v in pages.values()))
+
+# ---------------- Layout pages ----------------
+G = 'https://giving.pmsvault.com/DEMO/c/'
+LAY = [
+ ('classic','Classic','Multi-step wizard with a wide banner and a donation summary. Good for higher-value and flagship appeals.','1600 × 600','8:3 wide',
+  ('christmas-appeal-2026-realistic','75kn7aw3','Christmas Appeal 2026','lantern-trust/classic-snowy-park-1600x600.jpg'),
+  ('willowmere-light-up-a-life-realistic','j54we4jk','Light Up a Life','willowmere-hospice/classic-blossom-park-1600x600.jpg')),
+ ('compact','Compact','Single-page form under a compact banner. Best for embeds and quick gifts.','1200 × 480','5:2 wide',
+  ('warm-meal-fund-realistic','8v6dazar','Warm Meal Fund','lantern-trust/compact-steaming-soup-1200x480.jpg'),
+  ('willowmere-flowers-for-comfort-realistic','zntd4cdn','Flowers for Comfort','willowmere-hospice/compact-flowers-candle-1200x480.jpg')),
+ ('image-left','Image left','A tall photo on the left tells the story; the form sits on the right. Supporter quotes rotate over the image.','1120 × 1280','7:8 portrait',
+  ('a-home-for-every-family-realistic','r79sebyw','A Home for Every Family','lantern-trust/image-left-front-door-1120x1280.jpg'),
+  ('willowmere-every-moment-matters-realistic','jcrkkzzv','Every Moment Matters','willowmere-hospice/image-left-windowsill-1120x1280.jpg')),
+ ('image-right','Image right','The form comes first, with the photo on the right. On a phone the image moves below the form.','1120 × 1280','7:8 portrait',
+  ('winter-coat-drive-realistic','ku9zmzae','Winter Coat Drive','lantern-trust/image-right-child-in-snow-1120x1280.jpg'),
+  ('willowmere-remembrance-sunflowers-realistic','8snjkcgb','Remembrance Sunflowers','willowmere-hospice/image-right-sunflowers-1120x1280.jpg')),
+ ('hero-banner','Hero banner','A thin, full-width banner above a centred form, with an optional goal thermometer. Great for events.','1920 × 600','16:5 extra-wide',
+  ('lantern-walk-2026-realistic','6hyx66ep','Lantern Walk 2026','lantern-trust/hero-banner-evening-walk-1920x600.jpg'),
+  ('willowmere-garden-walk-2026-realistic','gmzuezas','Garden Walk 2026','willowmere-hospice/hero-banner-lavender-1920x600.jpg')),
+ ('immersive','Immersive','A full-screen photo with the form card floating over it. The most emotive layout, ideal for seasonal and in-memory giving.','1920 × 1080','16:9 full-screen',
+  ('light-a-lantern-realistic','yppbty6a','Light a Lantern','lantern-trust/immersive-sky-lanterns-1920x1080.jpg'),
+  ('willowmere-meadow-of-memories-realistic','hd66c8dg','A Meadow of Memories','willowmere-hospice/immersive-wildflower-meadow-1920x1080.jpg')),
+]
+LCSS = CSS.replace('</style>', '.cdi .lay{border:1px solid var(--line);border-radius:18px;padding:18px;margin:0 0 26px;background:#fff}.cdi .lay iframe{display:block;width:100%;border:none;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,.1);background:#f6f7fa}.cdi .lh{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;margin:0 0 12px}.cdi .chip{display:inline-block;font-size:12px;font-weight:800;color:#fff;border-radius:99px;padding:4px 12px}.cdi .chip.l{background:#14233c}.cdi .chip.w{background:#4b2e4f}.cdi .pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:10px 0 0}.cdi a.card .th{height:120px;border-radius:10px;background-size:cover;background-position:center;margin:-4px 0 8px}.cdi a.card .th2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:-4px 0 8px}.cdi a.card .th2 div{height:110px;border-radius:10px;background-size:cover;background-position:center}</style>')
+
+def embed(slug, code, h):
+    src = f'{G}{slug}?embed=true&amp;utm_source=integration&amp;utm_medium=embed&amp;utm_campaign={code}'
+    return f'<iframe src="{src}" height="{h}" title="Donation form" allow="payment" data-champ-auto-height></iframe>'
+
+layout_pages = {}
+for i, (k, name, desc, size, ratio, L, W) in enumerate(LAY):
+    prv = LAY[i-1]; nxt = LAY[(i+1) % len(LAY)]
+    h = 900 if k in ('immersive',) else 800
+    blocks = ''
+    for chip, cls, (slug, code, title, img) in (('Lantern Trust', 'l', L), ('Willowmere Hospice', 'w', W)):
+        blocks += f'<div class="lay"><div class="lh"><div><span class="chip {cls}">{chip}</span> <b style="color:#1e1b3a;font-size:17px;margin-left:6px">{e(title)}</b></div><a href="{G}{slug}" target="_blank" rel="noopener" class="go">Open full page ↗</a></div>{embed(slug, code, h)}</div>'
+    code_ex = f'<iframe src="{G}{L[0]}?embed=true&utm_source=integration&utm_medium=embed&utm_campaign={L[1]}" width="100%" height="700" title="Donation form" frameborder="0" allow="payment" data-champ-auto-height style="border:none;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.1);"></iframe>\n<script src="https://giving.pmsvault.com/embed/champ-iframe.v1.js" async></script>'
+    html_ = f"""{LCSS}<div class="cdi"><a class="back" href="{BASE}">← All CHAMP Donate integrations</a>
+<div class="hero"><div class="kick">Page layout</div><h1>{e(name)}</h1><p>{e(desc)}</p></div>
+<div class="two"><div class="box"><h3>Hero image</h3><p style="margin:0">{size} px · {ratio}</p></div><div class="box"><h3>Shown here</h3><p style="margin:0">Both demo charities, embedded live on this page with <b>Form on a page</b>. Each embed is tracked in CHAMP as “JLM layouts – Form on a page”.</p></div></div>
+<h2>See it live</h2>{blocks}
+<h2>How to use this layout</h2><div class="box"><ul class="steps"><li>In CHAMP, open the campaign and go to <b>Settings → Donation page → Page layout</b>, then choose <b>{e(name)}</b>.</li><li>Add a hero image at {size} px under <b>Hero banner</b>.</li><li>Save and <b>Publish</b>. The layout is used on the campaign’s own page and in every embed.</li></ul></div>
+<h2>Embed code used</h2><pre>{e(code_ex)}</pre><p class="note">The stock snippet caps the form at 500px wide. For wide layouts like this one, remove <code>max-width:500px</code> so the full design shows.</p>
+<div class="pn"><a class="back" href="{BASE}{prv[0]}-layout/">← {e(prv[1])}</a><a class="back" href="{BASE}{nxt[0]}-layout/">{e(nxt[1])} →</a></div></div>
+<script src="https://giving.pmsvault.com/embed/champ-iframe.v1.js" async></script>"""
+    layout_pages[f'{k}-layout'] = dict(title=f'{name} layout', html=minify(html_))
+
+lcards = ''.join(f'<a class="card" href="{BASE}{k}-layout/"><div class="th2"><div style="background-image:url({PH}{L[3]})"></div><div style="background-image:url({PH}{W[3]})"></div></div><b>{e(name)}</b><span>{e(desc.split(". ")[0])}.</span><div class="go">See both live →</div></a>' for k, name, desc, size, ratio, L, W in LAY)
+hub2 = hub.replace('<!-- wp:html -->\n', '').replace('\n<!-- /wp:html -->', '')
+hub2 = hub2.replace(CSS, LCSS).replace('<h2>Share a link</h2>', f'<h2>Page layouts</h2><p>Six designs for the donation page itself. Each one is shown live for both demo charities.</p><div class="grid">{lcards}</div><h2>Share a link</h2>', 1)
+hub2 = hub2.replace('Fourteen ways to put a CHAMP campaign in front of donors', 'Six page layouts and fourteen ways to put a CHAMP campaign in front of donors')
+json.dump({'hub': {'title': 'CHAMP Donate Integrations', 'html': minify(hub2)}, 'layouts': [{'slug': s, **v} for s, v in layout_pages.items()]}, open('/home/claude/jlm/layouts.json', 'w'), ensure_ascii=False)
+print('layouts', len(layout_pages))

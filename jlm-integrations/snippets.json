@@ -1,0 +1,98 @@
+{
+ "Donate link": {
+  "campaign": "Christmas Appeal 2026 (Realistic)",
+  "slug": "christmas-appeal-2026-realistic",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/christmas-appeal-2026-realistic?utm_source=integration&utm_medium=link&utm_campaign=qprq97sf",
+   "<a href=\"https://giving.pmsvault.com/DEMO/c/christmas-appeal-2026-realistic?utm_source=integration&utm_medium=link&utm_campaign=qprq97sf\" style=\"display:inline-flex;align-items:center;gap:8px;background:#1e3a8a;color:#fff;font-weight:600;padding:14px 28px;border-radius:50px;text-decoration:none;font-size:16px;\">Donate Now</a>"
+  ]
+ },
+ "Email signature": {
+  "campaign": "Willowmere – Every Moment Matters (Realistic)",
+  "slug": "willowmere-every-moment-matters-realistic",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/willowmere-every-moment-matters-realistic?utm_source=integration&utm_medium=email-signature&utm_campaign=cw6q5tns",
+   "<a href=\"https://giving.pmsvault.com/DEMO/c/willowmere-every-moment-matters-realistic?utm_source=integration&utm_medium=email-signature&utm_campaign=cw6q5tns\" style=\"display:inline-flex;align-items:center;gap:8px;background:#1e3a8a;color:#fff;font-weight:600;padding:14px 28px;border-radius:50px;text-decoration:none;font-size:16px;\">Support our work</a>"
+  ]
+ },
+ "Sticky bar after reading": {
+  "campaign": "Willowmere – Every Moment Matters (Realistic)",
+  "slug": "willowmere-every-moment-matters-realistic",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/willowmere-every-moment-matters-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=c7ft6s5k",
+   "<script src=\"https://giving.pmsvault.com/embed/donate-widget.v2.js\"></script>\n<script>\nChampDonate.init({\n  url: 'https://giving.pmsvault.com/DEMO/c/willowmere-every-moment-matters-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=c7ft6s5k',\n  mode: 'scroll',\n  buttonText: 'Donate Now',\n  scrollThreshold: 0.7,\n  promptText: 'Moved by what you read? Support us.'\n});\n</script>"
+  ]
+ },
+ "Newsletter button": {
+  "campaign": "Willowmere – Light Up a Life (Realistic)",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/willowmere-light-up-a-life-realistic?utm_source=integration&utm_medium=email&utm_campaign=n6jsqmtq"
+  ]
+ },
+ "QR code for print": {
+  "campaign": "Lantern Walk 2026 (Realistic)",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/lantern-walk-2026-realistic?utm_source=integration&utm_medium=qr&utm_campaign=rvq9bv3w"
+  ]
+ },
+ "Social media post": {
+  "campaign": "Willowmere – A Meadow of Memories (Realistic)",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/willowmere-meadow-of-memories-realistic?utm_source=integration&utm_medium=social&utm_campaign=p58fwytx"
+  ]
+ },
+ "Text message": {
+  "campaign": "Warm Meal Fund (Realistic)",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/warm-meal-fund-realistic?utm_source=integration&utm_medium=sms&utm_campaign=y47rd8y4"
+  ]
+ },
+ "Monthly giving link": {
+  "campaign": "A Home for Every Family (Realistic)",
+  "caps": [
+   "https://giving.pmsvault.com/DEMO/c/a-home-for-every-family-realistic?type=recurring&utm_source=integration&utm_medium=link&utm_campaign=cr8nas4g"
+  ]
+ },
+ "Ask for an email on close": {
+  "campaign": "A Home for Every Family (Realistic)",
+  "caps": [
+   "",
+   "<script src=\"https://giving.pmsvault.com/embed/donate-widget.v2.js\"></script>\n<script>\nChampDonate.init({\n  url: 'https://giving.pmsvault.com/DEMO/c/a-home-for-every-family-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=9f6hymfz',\n  buttonText: 'Donate',\n  frequencyCapDays: 7,\n  exitIntent: { enabled: true, headline: 'Before you go...', body: 'Leave your email and we’ll send you a gentle reminder to complete your donation.' }\n});\n</script>"
+  ]
+ },
+ "Form on a page": {
+  "campaign": "Willowmere – Flowers for Comfort (Realistic)",
+  "caps": [
+   "",
+   "<iframe src=\"https://giving.pmsvault.com/DEMO/c/willowmere-flowers-for-comfort-realistic?embed=true&amp;utm_source=integration&amp;utm_medium=embed&amp;utm_campaign=vxcrw7nb\" width=\"100%\" height=\"700\" title=\"Donation form\" frameborder=\"0\" allow=\"payment\" data-champ-auto-height style=\"border:none;border-radius:12px;max-width:500px;box-shadow:0 4px 20px rgba(0,0,0,0.1);\"></iframe>\n<script src=\"https://giving.pmsvault.com/embed/champ-iframe.v1.js\" async></script>"
+  ]
+ },
+ "Floating Donate button": {
+  "campaign": "Light a Lantern (Realistic)",
+  "caps": [
+   "",
+   "<script src=\"https://giving.pmsvault.com/embed/donate-widget.v2.js\"></script>\n<script>\nChampDonate.init({\n  url: 'https://giving.pmsvault.com/DEMO/c/light-a-lantern-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=rn573agj'\n});\n</script>"
+  ]
+ },
+ "Sticky bar": {
+  "campaign": "Willowmere – Remembrance Sunflowers (Realistic)",
+  "caps": [
+   "",
+   "<script src=\"https://giving.pmsvault.com/embed/donate-widget.v2.js\"></script>\n<script>\nChampDonate.init({\n  url: 'https://giving.pmsvault.com/DEMO/c/willowmere-remembrance-sunflowers-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=aewds5hw',\n  mode: 'scroll'\n});\n</script>"
+  ]
+ },
+ "Amounts in your text": {
+  "campaign": "Winter Coat Drive (Realistic)",
+  "caps": [
+   "",
+   "<script src=\"https://giving.pmsvault.com/embed/donate-widget.v2.js\"></script>\n<script>\nChampDonate.init({\n  url: 'https://giving.pmsvault.com/DEMO/c/winter-coat-drive-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=rk3jth3p',\n  mode: 'content'\n});\n</script>"
+  ]
+ },
+ "Your own Donate buttons": {
+  "campaign": "Willowmere – Garden Walk 2026 (Realistic)",
+  "caps": [
+   "",
+   "<script src=\"https://giving.pmsvault.com/embed/donate-widget.v2.js\"></script>\n<script>\nChampDonate.init({\n  url: 'https://giving.pmsvault.com/DEMO/c/willowmere-garden-walk-2026-realistic?embed=true&overlay=true&utm_source=integration&utm_medium=widget&utm_campaign=5bq3svqz',\n  mode: 'anchor',\n  trigger: '.champ-donate'\n});\n</script>"
+  ]
+ }
+}

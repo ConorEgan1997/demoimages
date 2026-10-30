@@ -83,7 +83,7 @@ def minify(h):
     h = re.sub(r'>\s+<', '><', h)
     h = re.sub(r'\n\s*', ' ', h)
     for i, k in enumerate(keep): h = h.replace(f'@@KEEP{i}@@', k)
-    return h
+    return '<!-- wp:html -->\n' + h + '\n<!-- /wp:html -->'
 
 def page(key, slug, icon, grp, one, best, body, code, steps, live_note=''):
     c = S[key]; camp = c['campaign']
